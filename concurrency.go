@@ -18,9 +18,9 @@ func Execute(tasks []func(ctx context.Context) error, E int) error {
 		wg.Add(1)
 		go func(task func(ctx context.Context) error) {
 			defer wg.Done()
-			mu.Lock()
-			defer mu.Unlock()
 			if locErr := task(ctx); locErr != nil {
+				mu.Lock()
+				defer mu.Unlock()
 				errCount++
 				err = locErr
 			}
